@@ -1,18 +1,44 @@
 <div class="main-wrapper">
     <div class="left">
-        <div class="header">
-            <input type="text" name="key" id="key" [(ngModel)]="room">
-            <button type="button" (click)="joinRoom()">Connect</button>
-        </div>
-        <div class="messages">
 
-        </div>
-        <div class="actions">
-            <textarea name="message" id="message" rows="10" [(ngModel)]="message"></textarea>
-            <button type="button" (click)="onSend()">Send</button>
-        </div>
     </div>
     <div class="right">
+        <div class="header">
+            <div>
+                <div>
+                    <label for="room">Room</label>
+                    <input [disabled]="isConnected()" autocomplete="off" type="text" name="room" id="room"
+                        [(ngModel)]="room">
+                </div>
+                <div>
+                    <label for="username">Username</label>
+                    <input [disabled]="isConnected()" autocomplete="off" type="text" name="username" id="username"
+                        [(ngModel)]="username">
+                </div>
+            </div>
+            <div>
+                <button type="button" [disabled]="isConnected()" (click)="joinRoom()">Connect</button>
+                <button type="button" [disabled]="!isConnected()" (click)="leaveRoom()">Disconnect</button>
+            </div>
 
+        </div>
+        <div class="messages-wrapper">
+            <div class="messages-header">
+                <span>{{ chatService.onlineUsers$ | async }} online 🟢</span>
+            </div>
+            <div class="messages">
+                @for (message of messages(); track $index) {
+                <app-chat-message [chatMessage]="message"></app-chat-message>
+                }
+            </div>
+        </div>
+        <div class="chat-input-container">
+            <textarea [disabled]="!isConnected()" #messageInput class="chat-textarea" [(ngModel)]="message" id="message"
+                name="message" placeholder="Write a message..." rows="1" (input)="autoResize(messageInput)"></textarea>
+
+            <button [disabled]="!isConnected()" (click)="onSend()">
+                Send
+            </button>
+        </div>
     </div>
 </div>
