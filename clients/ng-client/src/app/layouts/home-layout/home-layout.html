@@ -1,0 +1,18 @@
+<div class="main-wrapper">
+    <div class="left">
+        <div class="header">
+            <input type="text" name="key" id="key" [(ngModel)]="room">
+            <button type="button" (click)="joinRoom()">Connect</button>
+        </div>
+        <div class="messages">
+
+        </div>
+        <div class="actions">
+            <textarea name="message" id="message" rows="10" [(ngModel)]="message"></textarea>
+            <button type="button" (click)="onSend()">Send</button>
+        </div>
+    </div>
+    <div class="right">
+
+    </div>
+</div>
