@@ -31,8 +31,7 @@ export class HomeLayout implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.chatService.start();
     this.receiveMessage();
-
-    this.encryptService.encrypt("adir", "LeaveMeAlone");
+    this.getDataFromSessionStorage();
   }
 
   private receiveMessage(): void {
@@ -42,13 +41,24 @@ export class HomeLayout implements OnInit, OnDestroy {
         own: chat.username === this.username
       };
       this.messages.update((messages) => [...messages, updatedChat]);
+      sessionStorage.setItem('messages', JSON.stringify(this.messages()));
     })
   }
 
   joinRoom(): void {
     if (!this.room) return;
     this.chatService.joinRoom(this.room)
-      .then(() => this.isConnected.set(true));
+      .then(() => {
+        this.isConnected.set(true);
+        const userSessionStorage = {
+          username: this.username,
+          room: this.room,
+          secret: this.chatService.secret()
+        };
+        sessionStorage.setItem('userData', JSON.stringify(userSessionStorage));
+        const messagesSessionStorage = sessionStorage.getItem('messages');
+        if (messagesSessionStorage) this.messages.set(JSON.parse(messagesSessionStorage));
+      });
   }
 
   leaveRoom(): void {
@@ -67,6 +77,15 @@ export class HomeLayout implements OnInit, OnDestroy {
     }
     this.chatService.sendMessage(this.room, chat);
     this.message = '';
+  }
+
+  private getDataFromSessionStorage(): void {
+    const userSessionStorage = sessionStorage.getItem('userData');
+    if (!userSessionStorage) return;
+    const userData = JSON.parse(userSessionStorage);
+    this.room = userData.room;
+    this.username = userData.username;
+    this.chatService.secret.set(userData.secret);
   }
 
   autoResize(textarea: HTMLTextAreaElement) {
