@@ -2,7 +2,7 @@
     <div class="chat-username">{{ chatMessage().username }}</div>
 
     <div class="chat-bubble">
-        {{ chatMessage().message }}
+        {{ chatMessage().message ?? 'no message' }}
     </div>
 
     @if (chatMessage().sendAt) {

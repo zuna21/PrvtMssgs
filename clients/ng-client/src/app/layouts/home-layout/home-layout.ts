@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ChatMessage } from '../../components/chat-message/chat-message';
 import { Subscription } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
+import { EncryptService, Payload } from '../../services/encrypt-service';
 
 @Component({
   selector: 'app-home-layout',
@@ -17,6 +18,7 @@ import { AsyncPipe } from '@angular/common';
 })
 export class HomeLayout implements OnInit, OnDestroy {
   protected chatService = inject(ChatService);
+  private encryptService = inject(EncryptService);
 
   protected room: string = '';
   protected message: string = '';
@@ -29,6 +31,8 @@ export class HomeLayout implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.chatService.start();
     this.receiveMessage();
+
+    this.encryptService.encrypt("adir", "LeaveMeAlone");
   }
 
   private receiveMessage(): void {
@@ -54,10 +58,11 @@ export class HomeLayout implements OnInit, OnDestroy {
   }
 
 
-  onSend(): void {
+  async onSend(): Promise<void> {
     if (!this.room || !this.message || !this.username) return;
+    const payload: Payload = await this.encryptService.encrypt(this.message, this.chatService.secret());
     const chat: Chat = {
-      message: this.message,
+      payload: payload,
       username: this.username
     }
     this.chatService.sendMessage(this.room, chat);

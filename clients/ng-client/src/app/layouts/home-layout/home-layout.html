@@ -15,6 +15,11 @@
                     <input [disabled]="isConnected()" autocomplete="off" type="text" name="username" id="username"
                         [(ngModel)]="username">
                 </div>
+                <div>
+                    <label for="password">Password</label>
+                    <input [disabled]="isConnected()" autocomplete="off" type="text" name="password" id="password"
+                        [(ngModel)]="chatService.secret">
+                </div>
             </div>
             <div>
                 <button type="button" [disabled]="isConnected()" (click)="joinRoom()">Connect</button>

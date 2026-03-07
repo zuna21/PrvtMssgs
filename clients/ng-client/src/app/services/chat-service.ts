@@ -1,10 +1,12 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { HubConnectionBuilder } from '@microsoft/signalr';
 import { BehaviorSubject, Subject } from 'rxjs';
+import { EncryptService, Payload } from './encrypt-service';
 
 export interface Chat {
   username: string;
-  message: string;
+  payload: Payload;
+  message?: string;
   own?: boolean;
   sendAt?: string;
 }
@@ -13,6 +15,7 @@ export interface Chat {
   providedIn: 'root',
 })
 export class ChatService {
+  private encryptService = inject(EncryptService);
   private _hubConnection = new HubConnectionBuilder()
     .withAutomaticReconnect()
     .withUrl('https://localhost:5001/chatHub')
@@ -22,6 +25,7 @@ export class ChatService {
   private _onlineUsers = new BehaviorSubject<number>(0);
   chat$ = this._chat.asObservable();
   onlineUsers$ = this._onlineUsers.asObservable();
+  secret = signal<string>('');
 
 
   start(): void {
@@ -29,7 +33,13 @@ export class ChatService {
       .then(() => console.log('Connection started'))
       .catch((err) => console.log('Error: ' + err));
 
-    this._hubConnection.on('ReceiveMessage', (chat) => this._chat.next(chat));
+    this._hubConnection.on('ReceiveMessage', async (chat: Chat) => {
+      const message = await this.encryptService.decrypt(chat.payload, this.secret());
+      const chatWithMessage = {
+        ...chat,
+        message: message
+      }
+      this._chat.next(chatWithMessage)});
 
     this._hubConnection.on("RoomCount", (count) => this._onlineUsers.next(count));
   }
