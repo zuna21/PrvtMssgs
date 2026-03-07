@@ -1,0 +1,121 @@
+<div class="main-wrapper">
+    <h1>About PrvtMssgs</h1>
+    <br>
+    <p><strong>PrvtMssgs</strong> is a lightweight, privacy-focused chat application designed for secure and anonymous
+        communication.</p>
+    <br>
+    <p>To start chatting, users simply enter:</p>
+    <br>
+    <ul>
+        <li><strong>a room name</strong> (the group they want to join),</li>
+        <li>their <strong>username</strong>, and</li>
+        <li>a <strong>password</strong> used to encrypt and decrypt messages</li>
+    </ul>
+    <br>
+    <p>
+        This password never leaves the client. It is used locally to encrypt messages before they are send.
+    </p>
+    <br>
+    <h3>End-to-End Encryption</h3>
+    <br>
+    <p>
+        All messages in PrvtMessgs are <strong>encrypted on the client side</strong>
+        before being send to the server.
+    </p>
+    <p>
+        The server <strong>never sees the actual message content</strong> - it
+        only receives <strong>encrypted payloads</strong> and forwards
+        them to the other users in the same room.
+    </p>
+    <br>
+    <p>
+        Because of this design, the server effectively acts as a <strong>"zero-knowledge relay"</strong>
+        (sometimes referred to as a zero-room server): it simply routes encrypted messages without knowing
+        their contents.
+    </p>
+    <br>
+    <h3>No Database, No Tracking</h3>
+    <br>
+    <p>PrvtMssgs does <strong>not store messages on the server.</strong></p>
+    <br>
+    <p>
+        Messages exist only
+    </p>
+    <br>
+    <ul>
+        <li>
+            in the <strong>memory of connected clients</strong> and
+        </li>
+        <li>
+            in the browser's <strong>session storage.</strong>
+        </li>
+    </ul>
+    <br>
+    <p>This means:</p>
+    <br>
+    <ul>
+        <li>
+            messages disappear when the browser tab is closed,
+        </li>
+        <li>
+            no chat history is stored on the server,
+        </li>
+        <li>
+            no personal data or accounts are required.
+        </li>
+    </ul>
+    <br>
+    <h3>Anonymous by Design</h3>
+    <br>
+    <p>The server does not know:</p>
+    <br>
+    <ul>
+        <li>
+            who the users are,
+        </li>
+        <li>
+            what the messages contain,
+        </li>
+        <li>
+            or any persistent identity.
+        </li>
+    </ul>
+    <br>
+    <p>
+        it only forward encrypted messages between clients connected to the
+        same room.
+    </p>
+    <br>
+    <h3>Open Source</h3>
+    <br>
+    <p>
+        PrvtMssgs is <strong>fully open source</strong>, so anyone
+        can inspect the code, verify how encryption works, or run their
+        own instance.
+    </p>
+    <br>
+    <p>
+        You can view the source code on <a href="https://github.com/zuna21/PrvtMssgs" target="_blank">GitHub.</a>
+    </p>
+    <br>
+    <h3>
+        Educational Project & Responsible Use
+    </h3>
+    <br>
+    <p>
+        PrvtMssgs was created <strong>primarily as a learning project</strong> to
+        explore topics such as real-time communication, encryption in the browser, and privacy-focused
+        application design.
+    </p>
+    <br>
+    <p>
+        This project is <strong>not intended to support or encourage any illegal or harmful activities.</strong>
+        Users are expected to use the application <strong>responsibly and in accordance with applicable laws.</strong>
+    </p>
+    <br>
+    <p>
+        The goal of this project is to demonstrate how modern web technologies
+        can be used to build
+        <strong>secure, privacy-respecting communication tools.</strong>
+    </p>
+</div>

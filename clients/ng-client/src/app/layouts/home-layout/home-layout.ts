@@ -5,16 +5,18 @@ import { ChatMessage } from '../../components/chat-message/chat-message';
 import { Subscription } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { EncryptService, Payload } from '../../services/encrypt-service';
+import { AboutLayout } from '../about-layout/about-layout';
 
 @Component({
   selector: 'app-home-layout',
   imports: [
     FormsModule,
     ChatMessage,
-    AsyncPipe
+    AsyncPipe,
+    AboutLayout
   ],
   templateUrl: './home-layout.html',
-  styleUrl: './home-layout.css',
+  styleUrl: './home-layout.css'
 })
 export class HomeLayout implements OnInit, OnDestroy {
   protected chatService = inject(ChatService);
