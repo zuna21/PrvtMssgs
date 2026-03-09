@@ -2,6 +2,9 @@ import { inject, Injectable, signal } from '@angular/core';
 import { HubConnectionBuilder } from '@microsoft/signalr';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { EncryptService, Payload } from './encrypt-service';
+import { environment } from '../../environments/environment';
+
+const BASE_URL = environment.baseUrl;
 
 export interface Chat {
   username: string;
@@ -18,7 +21,7 @@ export class ChatService {
   private encryptService = inject(EncryptService);
   private _hubConnection = new HubConnectionBuilder()
     .withAutomaticReconnect()
-    .withUrl('https://localhost:5001/chatHub')
+    .withUrl(`${BASE_URL}/chatHub`)
     .build();
 
   private _chat = new Subject<Chat>();
