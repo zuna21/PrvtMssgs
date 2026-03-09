@@ -7,7 +7,7 @@
 
     @if (chatMessage().sendAt) {
     <div class="chat-time">
-        {{ chatMessage().sendAt | date}}
+        {{ chatMessage().sendAt | date:'short'}}
     </div>
     }
 </div>

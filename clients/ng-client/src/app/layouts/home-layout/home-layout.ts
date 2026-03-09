@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, ElementRef, inject, OnDestroy, OnInit, signal, viewChild } from '@angular/core';
 import { Chat, ChatService } from '../../services/chat-service';
 import { FormsModule } from '@angular/forms';
 import { ChatMessage } from '../../components/chat-message/chat-message';
@@ -27,6 +27,7 @@ export class HomeLayout implements OnInit, OnDestroy {
   protected username: string = '';
   protected isConnected = signal<boolean>(false);
   protected messages = signal<Chat[]>([]);
+  messagesContainer = viewChild<ElementRef<HTMLDivElement>>('messagesContainer');
 
   private chatSub?: Subscription;
 
@@ -43,8 +44,17 @@ export class HomeLayout implements OnInit, OnDestroy {
         own: chat.username === this.username
       };
       this.messages.update((messages) => [...messages, updatedChat]);
+      setTimeout(() => {
+        this.scrollToBottom();
+      })
       sessionStorage.setItem('messages', JSON.stringify(this.messages()));
     })
+  }
+
+  private scrollToBottom(): void {
+    const nativeElement: HTMLDivElement | undefined = this.messagesContainer()?.nativeElement;
+    if (!nativeElement) return;
+    nativeElement.scrollTop = nativeElement.scrollHeight;
   }
 
   joinRoom(): void {
