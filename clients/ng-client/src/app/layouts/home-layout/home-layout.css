@@ -26,6 +26,7 @@
     background: linear-gradient(180deg, #ffffff, #f1f3f6);
     padding: 10px;
     overflow-y: auto;
+    font-size: 0.9rem;
 }
 
 .right {
