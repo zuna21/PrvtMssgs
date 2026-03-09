@@ -25,9 +25,12 @@ export class ChatService {
     .build();
 
   private _chat = new Subject<Chat>();
+  private _onlineGroupUsers = new BehaviorSubject<number>(0);
   private _onlineUsers = new BehaviorSubject<number>(0);
   chat$ = this._chat.asObservable();
+  onlineGroupUsers$ = this._onlineGroupUsers.asObservable();
   onlineUsers$ = this._onlineUsers.asObservable();
+
   secret = signal<string>('');
 
 
@@ -44,7 +47,8 @@ export class ChatService {
       }
       this._chat.next(chatWithMessage)});
 
-    this._hubConnection.on("RoomCount", (count) => this._onlineUsers.next(count));
+    this._hubConnection.on("RoomCount", (count) => this._onlineGroupUsers.next(count));
+    this._hubConnection.on('OnlineCount', (totalUsers) => this._onlineUsers.next(totalUsers));
   }
 
   joinRoom(roomName: string): Promise<any> {

@@ -12,6 +12,7 @@ public class ChatHub : Hub
 
     private static readonly ConcurrentDictionary<string, ConcurrentDictionary<string, byte>> Connections
     = new();
+    private static readonly ConcurrentDictionary<string, byte> OnlineConnections = new();
 
     public async Task JoinRoom(string roomName)
     {
@@ -53,9 +54,21 @@ public class ChatHub : Hub
         await Clients.Group(roomName).SendAsync("ReceiveMessage", chat);
     }
 
+    public override async Task OnConnectedAsync()
+    {
+        var connectionId = Context.ConnectionId;
+        OnlineConnections.TryAdd(connectionId, 0);
+        await Clients.All.SendAsync("OnlineCount", OnlineConnections.Count);
+        await base.OnConnectedAsync();
+    }
+
     public override async Task OnDisconnectedAsync(Exception? exception)
     {
         var connectionId = Context.ConnectionId;
+
+        OnlineConnections.TryRemove(connectionId, out _);
+        await Clients.All.SendAsync("OnlineCount", OnlineConnections.Count);
+
         if (Connections.TryRemove(connectionId, out var groups))
         {
             foreach (var groupName in groups.Keys)

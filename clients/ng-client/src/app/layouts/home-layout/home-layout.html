@@ -24,12 +24,13 @@
             <div>
                 <button type="button" [disabled]="isConnected()" (click)="joinRoom()">Connect</button>
                 <button type="button" [disabled]="!isConnected()" (click)="leaveRoom()">Disconnect</button>
+                🟢 Total online: {{ chatService.onlineUsers$ | async }}
             </div>
 
         </div>
         <div class="messages-wrapper">
             <div class="messages-header">
-                <span>{{ chatService.onlineUsers$ | async }} online 🟢</span>
+                <span>{{ chatService.onlineGroupUsers$ | async }} online 🟢</span>
             </div>
             <div #messagesContainer class="messages">
                 @for (message of messages(); track $index) {
